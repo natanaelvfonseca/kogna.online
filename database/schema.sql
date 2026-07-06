@@ -18,7 +18,7 @@ $$;
 CREATE TABLE IF NOT EXISTS vendedores (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nome_vendedor VARCHAR(160) NOT NULL,
-    whatsapp_vendedor VARCHAR(32) NOT NULL UNIQUE,
+    whatsapp_vendedor VARCHAR(32) UNIQUE,
     whatsapp_gestor VARCHAR(32) NOT NULL,
     evolution_instance_id VARCHAR(160) NOT NULL UNIQUE,
     evolution_apikey TEXT NOT NULL,

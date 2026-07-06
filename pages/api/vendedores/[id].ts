@@ -5,7 +5,7 @@ import { getEvolutionConnectionStatus } from '../../../lib/server/evolution';
 type VendedorResponse = {
   id: string;
   nome_vendedor: string;
-  whatsapp_vendedor: string;
+  whatsapp_vendedor: string | null;
   whatsapp_gestor: string;
   evolution_instance_id: string;
   status_whatsapp: 'Conectado' | 'Desconectado';
@@ -39,7 +39,7 @@ async function getVendedor(
   const result = await pool.query<{
     id: string;
     nome_vendedor: string;
-    whatsapp_vendedor: string;
+    whatsapp_vendedor: string | null;
     whatsapp_gestor: string;
     evolution_instance_id: string;
     evolution_apikey: string;
@@ -100,7 +100,7 @@ async function updateVendedor(
   const result = await pool.query<{
     id: string;
     nome_vendedor: string;
-    whatsapp_vendedor: string;
+    whatsapp_vendedor: string | null;
     whatsapp_gestor: string;
     evolution_instance_id: string;
     evolution_apikey: string;

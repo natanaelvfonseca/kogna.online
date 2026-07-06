@@ -10,6 +10,40 @@ type EvolutionQrCode = {
   qrCodeText: string | null;
 };
 
+export async function createEvolutionInstance({
+  instanceId,
+  apiKey,
+}: EvolutionRequestOptions): Promise<void> {
+  const response = await evolutionFetch('/instance/create', {
+    method: 'POST',
+    apiKey,
+    body: JSON.stringify({
+      instanceName: instanceId,
+      qrcode: false,
+      integration: 'WHATSAPP-BAILEYS',
+      webhook: process.env.WEBHOOK_URL
+        ? {
+            url: process.env.WEBHOOK_URL,
+            byEvents: false,
+            base64: false,
+            events: ['MESSAGES_UPSERT'],
+          }
+        : undefined,
+    }),
+  });
+
+  if (response.ok) return;
+
+  const body = await response.text();
+  const normalized = body.toLowerCase();
+
+  if (response.status === 409 || normalized.includes('already') || normalized.includes('exist')) {
+    return;
+  }
+
+  throw new Error(`Evolution instance create failed: ${response.status} ${body.slice(0, 300)}`);
+}
+
 export async function getEvolutionConnectionStatus({
   instanceId,
   apiKey,
